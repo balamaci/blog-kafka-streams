@@ -1,0 +1,32 @@
+{
+  "loginFailedEvents":[
+    {
+      "HOSTNAME": "f65c41903208",
+      "@version": 1,
+      "level": "ERROR",
+      "logger_name": "ro.fortsoft.elk.testdata.generator.event.LoginEvent",
+      "appName": "elk-testdata",
+      "appVersion": "1.0",
+      "thread_name": "pool-3-thread-5",
+      "message": "FAILED login for user='ortiz@yahoo.com'",
+      "remoteIP": "192.168.0.152",
+      "@timestamp": "2016-06-29T14:14:12.471Z",
+      "host": "172.17.0.4",
+      "port": 46019
+    },
+    {
+      "HOSTNAME": "f65c41903208",
+      "@version": 1,
+      "level": "ERROR",
+      "logger_name": "ro.fortsoft.elk.testdata.generator.event.LoginEvent",
+      "appName": "elk-testdata",
+      "appVersion": "1.0",
+      "thread_name": "pool-3-thread-6",
+      "message": "FAILED login for user='wall@yahoo.com'",
+      "remoteIP": "192.168.0.152",
+      "@timestamp": "2016-06-29T14:14:12.471Z",
+      "host": "172.17.0.4",
+      "port": 46019
+    }
+  ]
+}
