@@ -26,25 +26,22 @@ public class SimpleJoinTableDSL extends BaseDSL {
 
         final KStream<String, String> kStream = builder.stream(topics);
 
-            kStream
-                        .mapValues(new JsonMapper())
-                        .filter((key, jsonValue) -> jsonValue.propertyStringValue("logger_name")
-                                .contains("ViewProductEvent"))
-                        .map((key, jsonValue) -> {
-                            Long eventId = jsonValue.propertyLongValue("eventId");
-                            Long productId = jsonValue.propertyLongValue("productId");
-                            String browserHash = jsonValue.propertyStringValue("browserHash");
+        kStream
+                .mapValues(new JsonMapper())
+                .filter((key, jsonValue) -> jsonValue.propertyStringValue("logger_name")
+                        .contains("ViewProductEvent"))
+                .map((key, jsonValue) -> {
+                    Long productId = jsonValue.propertyLongValue("productId");
+                    String browserHash = jsonValue.propertyStringValue("browserHash");
 
-                            return new KeyValue<Long, String>(productId, browserHash);
-                        })
-                        .groupByKey(Serdes.Long(), Serdes.String())
-                        .aggregate(() -> 0, (key, val, agg) -> (agg + 1), Serdes.Integer(), "counterStore")
+                    return new KeyValue<Long, String>(productId, browserHash);
+                })
+                .groupByKey(Serdes.Long(), Serdes.String())
+                .count("counterStore")
                 .toStream()
-                        .leftJoin(kProductsTable, (key, value) -> key,
-                                (val, globalVal) -> "Product:" + globalVal + "=" + val)
-                        .print(Serdes.Long(), Serdes.String());
-
-
+                .leftJoin(kProductsTable, (key, value) -> key,
+                            (val, globalVal) -> "Product:" + globalVal + "=" + val)
+                .print(Serdes.Long(), Serdes.String());
 
 //        KTable<Long, String> kProductNamesView = kProductsViewTable.join(kProductsTable, (name, count) -> name + "=" + count);
 

@@ -1,6 +1,6 @@
 package com.balamaci.kafka.streams;
 
-import com.balamaci.kafka.streams.dsl.SimpleJoinTableDSL;
+import com.balamaci.kafka.streams.dsl.SimpleAggregationDSL;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -31,7 +31,10 @@ public class StreamsStart {
 
 
         String[] topics = config.getString("kafka.topics").split(",");
-        KStreamBuilder streamsBuilder = new SimpleJoinTableDSL(topics).buildStream();
+        KStreamBuilder streamsBuilder = new SimpleAggregationDSL(topics).buildStream();
+//        KStreamBuilder streamsBuilder = new SimpleJoinTableDSL(topics).buildStream();
+
+
         KafkaStreams streams = new KafkaStreams(streamsBuilder, streamsConfiguration);
 
         streams.cleanUp();

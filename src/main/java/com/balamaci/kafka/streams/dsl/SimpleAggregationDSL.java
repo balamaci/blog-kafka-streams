@@ -22,21 +22,20 @@ public class SimpleAggregationDSL extends BaseDSL {
         final KStream<String, String> kStream = builder.stream(topics);
 
         KTable<Long, Integer> kTable =
-                kStream
+              kStream
                 .mapValues(new JsonMapper())
                 .filter((key, jsonValue) -> jsonValue.propertyStringValue("logger_name")
                         .contains("ViewProductEvent"))
                 .map((key, jsonValue) -> {
-                    Long eventId = jsonValue.propertyLongValue("eventId");
                     Long productId = jsonValue.propertyLongValue("productId");
                     String browserHash = jsonValue.propertyStringValue("browserHash");
 
                     return new KeyValue<Long, String>(productId, browserHash);
                 })
-                .groupByKey()
+                .groupByKey(Serdes.Long(), Serdes.String())
                     .aggregate(() -> 0, (key, val, agg) -> (agg + 1), Serdes.Integer(), "counterStore");
 
-        kTable.print(Serdes.Long(), Serdes.Integer());
+        kTable.print();
 
         return builder;
     }
