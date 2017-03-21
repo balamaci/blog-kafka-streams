@@ -1,4 +1,4 @@
-package com.balamaci.kafka;
+package com.balamaci.kafka.streams;
 
 import com.balamaci.kafka.util.Json;
 import com.google.gson.JsonParser;

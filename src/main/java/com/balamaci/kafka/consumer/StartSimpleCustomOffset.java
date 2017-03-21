@@ -1,6 +1,5 @@
-package com.balamaci.kafka;
+package com.balamaci.kafka.consumer;
 
-import com.balamaci.kafka.simple.SimpleConsumerCustomOffset;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -21,7 +20,7 @@ public class StartSimpleCustomOffset {
 
     private static final Config config = ConfigFactory.load("app");
 
-    private static final String CONSUMER_GROUP_ID = "simple-logs-processing";
+    private static final String CONSUMER_GROUP_ID = "consumer-logs-processing";
 
     public static void main(String[] args) {
         int numConsumers = 1;
