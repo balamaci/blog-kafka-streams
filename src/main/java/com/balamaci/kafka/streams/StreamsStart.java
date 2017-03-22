@@ -1,6 +1,6 @@
 package com.balamaci.kafka.streams;
 
-import com.balamaci.kafka.streams.dsl.SimpleAggregationDSL;
+import com.balamaci.kafka.streams.dsl.KTablesJoinedDSL;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -29,9 +29,9 @@ public class StreamsStart {
         Properties streamsConfiguration = streamConfig();
 
 
-
         String[] topics = config.getString("kafka.topics").split(",");
-        KStreamBuilder streamsBuilder = new SimpleAggregationDSL(topics).buildStream();
+//        KStreamBuilder streamsBuilder = new SimpleAggregationDSL(topics).buildStream();
+        KStreamBuilder streamsBuilder = new KTablesJoinedDSL(topics).buildStream();
 //        KStreamBuilder streamsBuilder = new SimpleJoinTableDSL(topics).buildStream();
 
 
@@ -40,7 +40,7 @@ public class StreamsStart {
         streams.cleanUp();
         streams.start();
 
-        printTopology(streams);
+//        printTopology(streams);
 
 //         Add shutdown hook to respond to SIGTERM and gracefully close Kafka Streams
         Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
