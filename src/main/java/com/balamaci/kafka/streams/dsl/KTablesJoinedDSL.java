@@ -47,20 +47,20 @@ public class KTablesJoinedDSL extends BaseDSL {
 
         captchaVerified.toStream().foreach((k, v) -> log.info("Passed captcha {}", k));
 
-        KTable<String, Long> browserCounts = browserActions.leftJoin(captchaVerified, (count, val) -> {
-            if(val == null) {
-                return count;
+        KTable<String, Long> browserCounts = browserActions.leftJoin(captchaVerified, (actionsCount, captchaVal) -> {
+            if(captchaVal == null) {
+                return actionsCount;
             }
-            return -1L;
+            return 0L;
         });
 
         browserCounts
                 .toStream()
-                .filter((browser, count) -> count > 5)
+                .filter((browser, count) -> count >= 5)
                 .groupByKey(Serdes.String(), Serdes.Long())
                 .reduce((val1, val2) -> val1, "captchaAskedFor")
                 .toStream()
-                .foreach( (k, v) -> log.info("Asking captcha for {}", k));
+                .foreach((k, v) -> log.info("Asking captcha for {}", k));
 
         return builder;
     }
