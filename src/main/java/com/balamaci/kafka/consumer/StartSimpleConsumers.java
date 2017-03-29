@@ -70,8 +70,13 @@ public class StartSimpleConsumers {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 
-        //
+        //How many records to retrieve in a poll() invocation even if there are more available
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "5");
+
+        //Heartbeat that the Kafka coordinator expects to be sent by the consumer
+        //should not have calls between poll() method take longer than this
+        //on the other hand it means it takes longer for the coordinator to declare the consumer dead
+        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "5000");
 
         return props;
     }

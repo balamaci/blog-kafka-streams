@@ -1,6 +1,6 @@
 package com.balamaci.kafka.streams;
 
-import com.balamaci.kafka.streams.dsl.KTablesJoinedDSL;
+import com.balamaci.kafka.streams.dsl.CountWithWindowDSL;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -31,8 +31,9 @@ public class StreamsStart {
 
         String[] topics = config.getString("kafka.topics").split(",");
 //        KStreamBuilder streamsBuilder = new SimpleAggregationDSL(topics).buildStream();
-        KStreamBuilder streamsBuilder = new KTablesJoinedDSL(topics).buildStream();
+//        KStreamBuilder streamsBuilder = new KTablesJoinedDSL(topics).buildStream();
 //        KStreamBuilder streamsBuilder = new SimpleJoinTableDSL(topics).buildStream();
+        KStreamBuilder streamsBuilder = new CountWithWindowDSL(topics).buildStream();
 
 
         KafkaStreams streams = new KafkaStreams(streamsBuilder, streamsConfiguration);
@@ -72,7 +73,7 @@ public class StreamsStart {
         // would be important for anomaly detection.
         streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 10000);
 
-        //what to do
+        //what to do when there is no offset data in Kafka brokers
         streamsConfiguration.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         return streamsConfiguration;

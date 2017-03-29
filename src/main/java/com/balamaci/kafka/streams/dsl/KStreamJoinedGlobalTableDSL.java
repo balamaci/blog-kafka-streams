@@ -64,7 +64,7 @@ public class KStreamJoinedGlobalTableDSL extends BaseDSL {
                         })
                 .filter((browser, count) -> count >= 5)
                 .groupByKey(Serdes.String(), Serdes.Long())
-                .reduce((val1, val2) -> val1, "captchaAskedFor")
+                .reduce((val1, val2) -> val1, "captchaAskedForStore")
                 .toStream()
                 .foreach((k, v) -> log.info("Asking captcha for {}", k));
 
